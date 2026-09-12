@@ -10,8 +10,6 @@ public class Player : MonoBehaviour
   [SerializeField] private bool _isEnergyExhausted;
   private const int _energyMax = 3;
  
- 
-   
    [SerializeField] private int _currentEnergy;
 
    public int CurrentEnergy
@@ -36,7 +34,6 @@ public class Player : MonoBehaviour
         Block = 10;
         _isDead = false;
         _isEnergyExhausted = false;
-     
         
         Debug.Log("Player is alive");
     }
