@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CardData", menuName = "Scriptable Objects/CardData")]
@@ -11,10 +12,8 @@ public int EnergyCost => _energyCost;
 [SerializeField] private CardType _cardType;
 public CardType CardType => _cardType;
 
-[SerializeField] private int _damage;
-public int Damage => _damage;
-[SerializeField] private int _block;
-public int Block => _block;
+[SerializeField] private List<CardEffect> _cardEffects;
+public IReadOnlyList <CardEffect> CardEffects => _cardEffects;
   
 }
 

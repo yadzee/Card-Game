@@ -4,41 +4,99 @@ using UnityEngine;
 public class Deck : MonoBehaviour
 {
     private List<Card> _drawPile;
-    public CardData StrikeCardData;
-    public CardData DefenceCardData;
-    public CardData BashCardData;
+    private List<Card> _discardPile;
+    private List<Card> _handDeck;
     
-        
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private const int HandMaxCapacity = 10;
+    public IReadOnlyList<Card> Hand => _handDeck;
+
+    public CardData strikeCardData;
+    public CardData defenceCardData;
+    public CardData bashCardData;
+
+
+    private void Awake()
     {
         _drawPile = new List<Card>();
-        for (int i = 0; i < 5; i++)
-        {
-            _drawPile.Add(new Card(StrikeCardData));
-        }
+        _discardPile = new List<Card>();
+        _handDeck = new List<Card>();
+        
         for (int i = 0; i < 4; i++)
         {
-            _drawPile.Add(new Card(DefenceCardData));
+            _drawPile.Add(new Card(defenceCardData));
         }
-        _drawPile.Add(new Card(BashCardData));
-}
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        for (int i = 0; i < 5; i++)
+        {
+            _drawPile.Add(new Card(strikeCardData));
+        }
+        _drawPile.Add(new Card(bashCardData));  
     }
-    
-    public Card DrawUpperCard()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+  
+    private Card DrawUpperCard()
     {
+        if (_handDeck.Count >= HandMaxCapacity)
+        {
+            Debug.Log("Reached maximum hand capacity");
+            return null;
+        }
+        // AddCardToHand() тоже проверяет вместимость руки.
+        // Позже решим, нужна ли эта проверка в обоих местах
+        
         if (_drawPile.Count == 0)
         {
-            return null;
+            if (_discardPile.Count == 0)
+            {
+                Debug.Log("No cards available to draw.");
+                return null;
+            }
+            _drawPile.AddRange(_discardPile);
+            // Shuffle mechanic
+            _discardPile.Clear();
         }
         Card upperCard = _drawPile[_drawPile.Count - 1];
         _drawPile.RemoveAt(_drawPile.Count - 1);
-        Debug.Log("Draw Upper Card");
+        AddCardToHand(upperCard);
         return upperCard;
+    }
+
+    public void DrawCards(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            DrawUpperCard();
+        }
+        Debug.Log($"Draw {amount} cards");
+        Debug.Log($"In drawPile remain {_drawPile.Count} cards");
+    }
+
+    public void DiscardHand()
+    {
+        _discardPile.AddRange(_handDeck);
+        _handDeck.Clear();
+        Debug.Log($"In discardPile remain  {_discardPile.Count} cards");
+    }
+    
+    public void DiscardCard(Card card)
+    {
+        if (!_handDeck.Remove(card))
+        {
+            Debug.Log("Card is not in hand!");
+            return;
+        }
+
+        _discardPile.Add(card);
+    }
+
+    private bool AddCardToHand(Card card)
+    {
+        if (_handDeck.Count >= HandMaxCapacity)
+        {
+            Debug.Log("Hand is full!");
+            return false;
+        }
+
+        _handDeck.Add(card); 
+        return true;
     }
 }

@@ -15,5 +15,5 @@ MonoBehaviour:
   _name: Defend
   _energyCost: 1
   _cardType: 1
-  _damage: 0
-  _block: 5
+  _cardEffects:
+  - {fileID: 11400000, guid: a58c021654ed5844c80ef2310a32112e, type: 2}

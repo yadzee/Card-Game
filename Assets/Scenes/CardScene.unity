@@ -602,8 +602,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f8e6fda5e71fb544b233ea50f938ed5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatController
-  _player: {fileID: 707346249}
-  _enemy: {fileID: 1165564356}
+  player: {fileID: 707346249}
+  enemy: {fileID: 1165564356}
+  deck: {fileID: 1205717957}
 --- !u!4 &594188330
 Transform:
   m_ObjectHideFlags: 0
@@ -981,6 +982,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de9cdd3213fe9f64a852ae2a3512e474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BasicEnemy
+  _block: 0
+  currentIntent: 0
+--- !u!1 &1205717956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1205717958}
+  - component: {fileID: 1205717957}
+  m_Layer: 0
+  m_Name: Deck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1205717957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205717956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6083a9e016a846040820da513428aec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Deck
+  strikeCardData: {fileID: 11400000, guid: 79169622529a0524682cb262b28a28a9, type: 2}
+  defenceCardData: {fileID: 11400000, guid: 6e4ce59dcb2c9ef4c84b741f1e83a138, type: 2}
+  bashCardData: {fileID: 11400000, guid: 4d0aab7ee28d9ca42961c32ab6c1c42a, type: 2}
+--- !u!4 &1205717958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205717956}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.48, y: -4.0014, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1553196648 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2144038177925343300, guid: eb28f796948c44448b637d3b83f3204e, type: 3}
@@ -1688,6 +1738,10 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Tools.UI.Card.UiCardParameters, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 6079006313700070210, guid: c9682acea5399fa48b319aabcd38ed1c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6079006313752007581, guid: c9682acea5399fa48b319aabcd38ed1c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1948,6 +2002,10 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
+    - target: {fileID: 6079006314353555451, guid: c9682acea5399fa48b319aabcd38ed1c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6079006314371248871, guid: c9682acea5399fa48b319aabcd38ed1c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1975,6 +2033,10 @@ PrefabInstance:
     - target: {fileID: 6079006314461686501, guid: c9682acea5399fa48b319aabcd38ed1c, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6079006314461686503, guid: c9682acea5399fa48b319aabcd38ed1c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -12.1
       objectReference: {fileID: 0}
     - target: {fileID: 6079006314477428438, guid: c9682acea5399fa48b319aabcd38ed1c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2125,6 +2187,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24b45a110430e54aadad1e9233f73c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StrongEnemy
+  _block: 0
+  currentIntent: 0
 --- !u!4 &2118176270
 Transform:
   m_ObjectHideFlags: 0
@@ -2155,3 +2219,4 @@ SceneRoots:
   - {fileID: 707346250}
   - {fileID: 1165564355}
   - {fileID: 2118176270}
+  - {fileID: 1205717958}

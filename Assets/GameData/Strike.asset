@@ -15,5 +15,5 @@ MonoBehaviour:
   _name: Strike
   _energyCost: 1
   _cardType: 0
-  _damage: 6
-  _block: 0
+  _cardEffects:
+  - {fileID: 11400000, guid: 09c4a4ce10890b64fb30d9191b042001, type: 2}

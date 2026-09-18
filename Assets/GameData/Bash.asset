@@ -15,5 +15,6 @@ MonoBehaviour:
   _name: Bash
   _energyCost: 2
   _cardType: 0
-  _damage: 8
-  _block: 0
+  _cardEffects:
+  - {fileID: 11400000, guid: 7c75b8ce1ce502d4d880b030a802b08b, type: 2}
+  - {fileID: 11400000, guid: b5f95b4b2f34f1343a9fb9e95d710560, type: 2}

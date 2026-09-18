@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
    public int CurrentEnergy
    {
        get => _currentEnergy;
-       set => _currentEnergy = value >= 0 ? value : 0;
+       private set => _currentEnergy = value >= 0 ? value : 0;
    }
    
    [SerializeField] private int _block;
@@ -67,11 +67,6 @@ public class Player : MonoBehaviour
             ResetBlock();  
         }
         
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            GetBlock(); 
-        }
-        
     }
 
     private void TakeDamage(int damage)
@@ -117,19 +112,19 @@ public class Player : MonoBehaviour
      }
     }
     
-    private void ResetBlock()
+    public void ResetBlock()
     {
         Block = 0;
         Debug.Log("ResetBlock. Current Block: " + Block);
     }
 
-    private void GetBlock()
+    public void GainBlock(int amount)
     {
-        Block = Block + 10;
-        Debug.Log("GetBlock + 10. Current Block: " + Block);
+        Block += amount;
+        Debug.Log($"Gain {amount} Block. Current Block: {Block}");
     }
 
-    private void SpendEnergy(int amount)
+    public void SpendEnergy(int amount)
     {
      if (CurrentEnergy > 0 && amount <= CurrentEnergy)
         {
@@ -159,10 +154,9 @@ public class Player : MonoBehaviour
         Debug.Log("Energy reset: " + CurrentEnergy);
     }
 
-    public void EnemyStrikesMe(Enemy enemy)
+    public void ReceiveAttack(EnemyAction attack)
     {
-        int damageReceived = enemy.Attack();
-            TakeDamage(damageReceived);
+            TakeDamage(attack.Value);
     }
     
     // private void SwitchTurn()
