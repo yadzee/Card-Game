@@ -50,9 +50,7 @@ public class Deck : MonoBehaviour
                 Debug.Log("No cards available to draw.");
                 return null;
             }
-            _drawPile.AddRange(_discardPile);
-            // Shuffle mechanic
-            _discardPile.Clear();
+            ShuffleDiscardIntoDrawPile();
         }
         Card upperCard = _drawPile[_drawPile.Count - 1];
         _drawPile.RemoveAt(_drawPile.Count - 1);
@@ -98,5 +96,20 @@ public class Deck : MonoBehaviour
 
         _handDeck.Add(card); 
         return true;
+    }
+
+    private void ShuffleDiscardIntoDrawPile()
+    {
+        for (int i = _discardPile.Count - 1; i > 0; i--)
+        {
+            int randomIndex = Random.Range(0, i +1);
+            
+            var temp = _discardPile[i];
+            _discardPile[i] = _discardPile[randomIndex];
+            _discardPile[randomIndex] = temp;
+        }
+        _drawPile.AddRange(_discardPile);
+        _discardPile.Clear();
+        Debug.Log("Shuffling discard into draw pile");
     }
 }
