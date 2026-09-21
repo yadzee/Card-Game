@@ -8,4 +8,9 @@ public class BlockEffect: CardEffect
     {
         player.GainBlock(_block);
     }
+    
+    public void ExecuteMultiplier(Player player, Enemy enemy, float multiplier)
+    {
+        player.GainBlock(Mathf.FloorToInt(_block * multiplier));
+    }
 }

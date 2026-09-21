@@ -7,6 +7,7 @@ public class CombatController: MonoBehaviour
      [SerializeField] private Player player;
      [SerializeField] private Enemy enemy;
      [SerializeField] private Deck deck;
+     [SerializeField] private RumCup rumCup;
      
     private void Start()
     {
@@ -82,6 +83,7 @@ public class CombatController: MonoBehaviour
         if (_curretTurn == Turns.PlayerTurn)
         {
             deck.DiscardHand();
+            rumCup.ResetAfterTurn();
             EnemyTurn();
         }
     }
@@ -129,13 +131,27 @@ public class CombatController: MonoBehaviour
             if (card.EnergyCost <= player.CurrentEnergy)
             {
                 Debug.Log("Enough energy");
+                CardEffect chosenEffect = rumCup.ChooseCard(card);
 
                 player.SpendEnergy(card.EnergyCost);
                 foreach (var effect in card.CardEffects)
                 {
-                    effect.Execute(player,enemy);
+                    if (effect == chosenEffect)
+                    {
+                        if (effect is DamageEffect)
+                            ((DamageEffect)effect).ExecuteMultiplier(player, enemy, rumCup.GetEffectMultiplier(effect));
+                        else if (effect is BlockEffect)
+                            ((BlockEffect)effect).ExecuteMultiplier(player, enemy, rumCup.GetEffectMultiplier(effect));
+                        rumCup.ConsumeBonus();
+                    }
+                    
+                    else
+                    {
+                        effect.Execute(player,enemy);
+                    }
                 }
                 deck.DiscardCard(card);
+                rumCup.RegisterCardPlayed();
             }
         }
     }

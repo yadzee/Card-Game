@@ -9,4 +9,9 @@ public class DamageEffect : CardEffect
     {
         enemy.TakeDamage(_damage);
     }
+
+    public void ExecuteMultiplier(Player player, Enemy enemy, float multiplier)
+    {
+        enemy.TakeDamage(Mathf.FloorToInt(_damage * multiplier));
+    }
 }

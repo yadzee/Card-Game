@@ -21,17 +21,16 @@ public class Deck : MonoBehaviour
         _discardPile = new List<Card>();
         _handDeck = new List<Card>();
         
-        for (int i = 0; i < 4; i++)
-        {
-            _drawPile.Add(new Card(defenceCardData));
-        }
         for (int i = 0; i < 5; i++)
         {
             _drawPile.Add(new Card(strikeCardData));
         }
+        for (int i = 0; i < 4; i++)
+        {
+            _drawPile.Add(new Card(defenceCardData));
+        }
         _drawPile.Add(new Card(bashCardData));  
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
   
     private Card DrawUpperCard()
     {
