@@ -603,9 +603,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatController
   player: {fileID: 707346249}
-  enemy: {fileID: 1165564356}
+  enemy: {fileID: 1165564357}
   deck: {fileID: 1205717957}
   rumCup: {fileID: 989364073}
+  playerHandUI: {fileID: 1112883159}
 --- !u!4 &594188330
 Transform:
   m_ObjectHideFlags: 0
@@ -661,12 +662,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 291bfcb97c654834fad66ec510a46bf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  _maxHealth: 0
-  _currentHealth: 0
-  _isDead: 0
-  _isEnergyExhausted: 0
-  _currentEnergy: 0
-  _block: 0
 --- !u!4 &707346250
 Transform:
   m_ObjectHideFlags: 0
@@ -675,7 +670,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 707346248}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.86248, y: -0.50356, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -889,7 +884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f40324c2d41ed24182fe435c56951fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RumCup
-  _triggerThreshold: 6
+  triggerThreshold: 6
 --- !u!4 &989364074
 Transform:
   m_ObjectHideFlags: 0
@@ -897,6 +892,64 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 989364072}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.57513, y: -3.20693, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1033355154 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2144038176509889717, guid: eb28f796948c44448b637d3b83f3204e, type: 3}
+  m_PrefabInstance: {fileID: 105395974}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e577684f24150cc4b9f493b4b9942f15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1112883158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1112883160}
+  - component: {fileID: 1112883159}
+  m_Layer: 0
+  m_Name: PlayerHandUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1112883159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112883158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ff0b0c093a3344686b636c00cab7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHandUI
+  deck: {fileID: 1205717957}
+  playerHand: {fileID: 1033355154}
+  cardPrefab: {fileID: 3245573509686006908, guid: da89c93580533da4abe22dd655a7d0ca, type: 3}
+--- !u!4 &1112883160
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112883158}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.57513, y: -3.20693, z: 0}
@@ -994,6 +1047,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1165564355}
   - component: {fileID: 1165564356}
+  - component: {fileID: 1165564357}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1028,7 +1082,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de9cdd3213fe9f64a852ae2a3512e474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BasicEnemy
+  _currentHealth: 0
+  _maxHealth: 0
   _block: 0
+  _vulnerable: 0
+  currentIntent: 0
+--- !u!114 &1165564357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165564353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c7e4c42bbfac5b4eb35be6b86b0e0bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Characters.BasicEnemy
+  block: 0
   currentIntent: 0
 --- !u!1 &1205717956
 GameObject:
@@ -1712,6 +1783,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6079006313439611557, guid: c9682acea5399fa48b319aabcd38ed1c, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6079006313439611559, guid: c9682acea5399fa48b319aabcd38ed1c, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -2214,6 +2289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2118176270}
   - component: {fileID: 2118176269}
+  - component: {fileID: 2118176271}
   m_Layer: 0
   m_Name: StrongEnemy
   m_TagString: Untagged
@@ -2233,7 +2309,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24b45a110430e54aadad1e9233f73c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StrongEnemy
+  _currentHealth: 0
+  _maxHealth: 0
   _block: 0
+  _vulnerable: 0
   currentIntent: 0
 --- !u!4 &2118176270
 Transform:
@@ -2250,6 +2329,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2118176271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118176268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64f5c1186bce76f4da0a08c1a7c3111f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Characters.StrongEnemy
+  block: 0
+  currentIntent: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2267,3 +2360,4 @@ SceneRoots:
   - {fileID: 2118176270}
   - {fileID: 1205717958}
   - {fileID: 989364074}
+  - {fileID: 1112883160}
