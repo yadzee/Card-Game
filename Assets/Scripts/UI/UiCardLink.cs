@@ -1,16 +1,16 @@
-using Gameplay.Cards;
-using UnityEngine;
+    using Gameplay.Cards;
+    using UnityEngine;
 
-namespace UI
-{
-    public class UiCardLink : MonoBehaviour
+    namespace UI
     {
-        private Card _card;
-        public Card Card => _card;
-
-        public void Initialize(Card card)
+        public class UiCardLink : MonoBehaviour
         {
-            _card = card;
+            private Card _card;
+            public Card Card => _card;
+
+            public void Initialize(Card card)
+            {
+                _card = card;
+            }
         }
     }
-}

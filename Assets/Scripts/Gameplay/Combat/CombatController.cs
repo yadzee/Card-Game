@@ -102,7 +102,8 @@ namespace Gameplay.Combat
             player.ResetEnergy();
             player.ResetBlock();
             deck.DrawCards(5);
-            playerHandUI.AddCardToHand(deck.Hand[0]);
+            Debug.Log($"Cards in hand: {deck.Hand.Count}");
+            playerHandUI.AddCardsToHand(deck.Hand);
             _currentTurn = Turns.PlayerTurn;
             Debug.Log("Player turn " + _currentTurn);
         }

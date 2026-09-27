@@ -171,6 +171,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -4
       objectReference: {fileID: 0}
+    - target: {fileID: 2144038176792078901, guid: eb28f796948c44448b637d3b83f3204e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2144038176792078910, guid: eb28f796948c44448b637d3b83f3204e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2144038176815076911, guid: eb28f796948c44448b637d3b83f3204e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.48
@@ -287,11 +295,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 105395974}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe4e6242e55c49f4196ccec629c5b6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &205980021 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2144038176792078898, guid: eb28f796948c44448b637d3b83f3204e, type: 3}
+  m_PrefabInstance: {fileID: 105395974}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,6 +956,8 @@ MonoBehaviour:
   deck: {fileID: 1205717957}
   playerHand: {fileID: 1033355154}
   cardPrefab: {fileID: 3245573509686006908, guid: da89c93580533da4abe22dd655a7d0ca, type: 3}
+  deckPosition: {fileID: 205980021}
+  gameView: {fileID: 1969477967}
 --- !u!4 &1112883160
 Transform:
   m_ObjectHideFlags: 0
@@ -1046,7 +1061,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1165564355}
-  - component: {fileID: 1165564356}
   - component: {fileID: 1165564357}
   m_Layer: 0
   m_Name: Enemy
@@ -1070,23 +1084,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1165564356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1165564353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de9cdd3213fe9f64a852ae2a3512e474, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BasicEnemy
-  _currentHealth: 0
-  _maxHealth: 0
-  _block: 0
-  _vulnerable: 0
-  currentIntent: 0
 --- !u!114 &1165564357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2279,6 +2276,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521677a294a9f8246a76088a4251dfe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1969477967 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2144038177838837771, guid: eb28f796948c44448b637d3b83f3204e, type: 3}
+  m_PrefabInstance: {fileID: 105395974}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2118176268
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,7 +2290,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2118176270}
-  - component: {fileID: 2118176269}
   - component: {fileID: 2118176271}
   m_Layer: 0
   m_Name: StrongEnemy
@@ -2297,23 +2298,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2118176269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2118176268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d24b45a110430e54aadad1e9233f73c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StrongEnemy
-  _currentHealth: 0
-  _maxHealth: 0
-  _block: 0
-  _vulnerable: 0
-  currentIntent: 0
 --- !u!4 &2118176270
 Transform:
   m_ObjectHideFlags: 0
