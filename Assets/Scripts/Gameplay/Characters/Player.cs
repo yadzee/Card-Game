@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Gameplay.Characters
@@ -15,7 +16,11 @@ namespace Gameplay.Characters
         public int CurrentEnergy
         {
             get => _currentEnergy;
-            private set => _currentEnergy = value >= 0 ? value : 0;
+            private set
+            {
+                _currentEnergy = value >= 0 ? value : 0;
+                OnEnergyChanged?.Invoke(_currentEnergy);
+            }
         }
 
         private int _block;
@@ -25,6 +30,8 @@ namespace Gameplay.Characters
             get => _block;
             private set => _block = value >= 0 ? value : 0;
         }
+        
+        public event Action<int> OnEnergyChanged;
 
 
         private void Start()
@@ -55,7 +62,7 @@ namespace Gameplay.Characters
                 if (!_isEnergyExhausted)
                 {
                     Debug.Log("SpendEnergy ");
-                    SpendEnergy(5);
+                    SpendEnergy(1);
                 }
             }
 
