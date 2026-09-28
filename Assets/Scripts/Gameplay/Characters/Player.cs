@@ -6,7 +6,25 @@ namespace Gameplay.Characters
     public class Player : MonoBehaviour
     {
         private int _maxHealth;
+        public int MaxHealth
+        {
+            get => _maxHealth;
+            private set
+            {
+                _maxHealth = value >= 0 ? value : 0;
+            }
+        }
         private int _currentHealth;
+        
+        public int CurrentHealth
+        {
+            get => _currentHealth;
+            private set
+            {
+                _currentHealth = value >= 0 ? value : 0;
+                OnHealthChanged?.Invoke(_currentHealth);
+            }
+        }
         private bool _isDead;
         private bool _isEnergyExhausted;
         private const int EnergyMax = 3;
@@ -32,12 +50,13 @@ namespace Gameplay.Characters
         }
         
         public event Action<int> OnEnergyChanged;
+        public event Action<int> OnHealthChanged;
 
 
-        private void Start()
+        private void Awake()
         {
-            _maxHealth = 30;
-            _currentHealth = _maxHealth;
+            MaxHealth = 30;
+            CurrentHealth = MaxHealth;
             CurrentEnergy = EnergyMax;
             Block = 10;
             _isDead = false;
@@ -97,8 +116,8 @@ namespace Gameplay.Characters
 
                 if (Block == 0)
                 {
-                    _currentHealth -= currentDamage;
-                    Debug.Log("Player HP: " + _currentHealth);
+                    CurrentHealth -= currentDamage;
+                    Debug.Log("Player HP: " + CurrentHealth);
                 }
 
                 else
@@ -112,7 +131,7 @@ namespace Gameplay.Characters
 
         private void CheckHealth()
         {
-            if (_currentHealth <= 0 && !_isDead)
+            if (CurrentHealth <= 0 && !_isDead)
             {
                 _isDead = true;
                 Debug.Log("Player is dead");

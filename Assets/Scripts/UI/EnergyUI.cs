@@ -12,13 +12,18 @@ namespace UI
         private void OnEnable()
         {
             player.OnEnergyChanged += HandleEnergyChanged;
+        }
+
+        private void Start()
+        {
             HandleEnergyChanged(player.CurrentEnergy);
         }
+
         private void HandleEnergyChanged(int currentEnergy)
         {
             energyText.text = currentEnergy.ToString();
         }
-        
+
         private void OnDisable()
         {
             player.OnEnergyChanged -= HandleEnergyChanged;
