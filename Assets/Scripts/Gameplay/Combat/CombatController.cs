@@ -19,7 +19,7 @@ namespace Gameplay.Combat
 
         private void Awake()
         {
-            playerHandUI.OnCardSelected += PlayCard;
+            
         }
 
         private void Start()
@@ -135,7 +135,7 @@ namespace Gameplay.Combat
             PlayerTurn();
         }
 
-        public void PlayCard(Card card)
+        public bool PlayCard(Card card)
         {
             Debug.Log("PlayCard called");
             if (deck.Hand.Contains(card))
@@ -169,8 +169,13 @@ namespace Gameplay.Combat
 
                     deck.DiscardCard(card);
                     rumCup.RegisterCardPlayed();
+                    return true;
                 }
             }
+
+            return false;
         }
+        
+       
     }
 }

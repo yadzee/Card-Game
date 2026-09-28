@@ -116,7 +116,10 @@ namespace Tools.UI.Card
                 return;
 
             Hand.SelectCard(this);
-            Fsm.Select();
+            if (Hand.Cards.Contains(this))
+            {
+                Fsm.Select();
+            }
         }
 
         public void Unselect() => Fsm.Unselect();

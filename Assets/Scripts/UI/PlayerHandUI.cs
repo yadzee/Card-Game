@@ -1,10 +1,10 @@
-using System;
 using Gameplay.Cards;
 using Gameplay.Deck;
 using UnityEngine;
 using Tools.UI.Card;
 using System.Collections;
 using System.Collections.Generic;
+using Gameplay.Combat;
 
 namespace UI
 {
@@ -16,6 +16,8 @@ namespace UI
         [SerializeField] private Transform deckPosition;
         [SerializeField] private Transform gameView;
         [SerializeField] private float cardDrawDelay = 0.2f;
+        [SerializeField] private CombatController combatController;
+        
         private IUiPlayerHand _playerHand;
         
         private void Awake()
@@ -55,9 +57,12 @@ namespace UI
         {
             var cardLink = uiCard.MonoBehavior.GetComponent<UiCardLink>();
             Debug.Log($"Selected gameplay card: {cardLink.Card.Name}");
-            OnCardSelected?.Invoke(cardLink.Card);
+            bool cardPlayed = combatController.PlayCard(cardLink.Card);
+            if (cardPlayed)
+            {
+                _playerHand.PlayCard(uiCard);
+            }
         }
         
-        public event Action<Card> OnCardSelected;
     }
 }
