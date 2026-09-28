@@ -1,3 +1,4 @@
+using System;
 using Gameplay.Cards;
 using Gameplay.Deck;
 using UnityEngine;
@@ -54,6 +55,9 @@ namespace UI
         {
             var cardLink = uiCard.MonoBehavior.GetComponent<UiCardLink>();
             Debug.Log($"Selected gameplay card: {cardLink.Card.Name}");
+            OnCardSelected?.Invoke(cardLink.Card);
         }
+        
+        public event Action<Card> OnCardSelected;
     }
 }

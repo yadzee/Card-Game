@@ -17,6 +17,10 @@ namespace Gameplay.Combat
         [SerializeField] private RumCup rumCup;
         [SerializeField] private PlayerHandUI playerHandUI;
 
+        private void Awake()
+        {
+            playerHandUI.OnCardSelected += PlayCard;
+        }
 
         private void Start()
         {
