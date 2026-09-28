@@ -64,5 +64,10 @@ namespace UI
             }
         }
         
+        public void DiscardHand()
+        {
+            _playerHand.DiscardHand();
+        }
+        
     }
 }

@@ -17,11 +17,6 @@ namespace Gameplay.Combat
         [SerializeField] private RumCup rumCup;
         [SerializeField] private PlayerHandUI playerHandUI;
 
-        private void Awake()
-        {
-            
-        }
-
         private void Start()
         {
             PlayerTurn();
@@ -95,6 +90,7 @@ namespace Gameplay.Combat
             if (_currentTurn == Turns.PlayerTurn)
             {
                 deck.DiscardHand();
+                playerHandUI.DiscardHand();
                 rumCup.ResetAfterTurn();
                 EnemyTurn();
             }

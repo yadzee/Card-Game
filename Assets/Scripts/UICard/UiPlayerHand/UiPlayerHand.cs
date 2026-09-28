@@ -124,6 +124,19 @@ namespace Tools.UI.Card
             foreach (var otherCard in Cards)
                 otherCard.Enable();
         }
+        /// <summary>
+        ///     Discard for the rest cards.
+        /// </summary>
+        
+        public void DiscardHand()
+        {
+            var cards = Cards.ToArray();
+
+            foreach (var card in cards)
+            {
+                PlayCard(card);
+            }
+        }
 
         [Button]
         void NotifyCardSelected() => OnCardSelected?.Invoke(SelectedCard);
