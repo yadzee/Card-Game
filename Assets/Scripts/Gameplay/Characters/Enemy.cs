@@ -1,5 +1,6 @@
 using UnityEngine;
 using Gameplay.Combat;
+using System;
 
 namespace Gameplay.Characters
 {
@@ -11,12 +12,18 @@ namespace Gameplay.Characters
         public int CurrentHealth
         {
             get => _currentHealth;
-            private set => _currentHealth = value >= 0 ? value : 0;
+            private set
+            {
+                _currentHealth = value >= 0 ? value : 0;
+                OnHealthChanged?.Invoke(_currentHealth);
+            }
         }
 
         private int _maxHealth;
+        public int MaxHealth => _maxHealth;
 
         [SerializeField] private int block;
+        [SerializeField] private int blockAmount;
 
         public int Block
         {
@@ -33,11 +40,12 @@ namespace Gameplay.Characters
         }
 
         [SerializeField] private EnemyIntent currentIntent;
+        public event Action<int> OnHealthChanged;
 
         public abstract int Attack();
 
 
-        private void Start()
+        private void Awake()
         {
             _maxHealth = 30;
             CurrentHealth = _maxHealth;
@@ -46,6 +54,7 @@ namespace Gameplay.Characters
 
         public void TakeDamage(int damage)
         {
+            Debug.Log($"Enemy TakeDamage: damage={damage}, block={Block}, health={CurrentHealth}");
             if (Vulnerable > 0)
             {
                 damage = Mathf.FloorToInt(damage * 1.5f);
@@ -102,7 +111,7 @@ namespace Gameplay.Characters
                 case EnemyIntent.Attack:
                     return new EnemyAction(EnemyIntent.Attack, Attack());
                 case EnemyIntent.Block:
-                    return new EnemyAction(EnemyIntent.Block, 5);
+                    return new EnemyAction(EnemyIntent.Block, blockAmount);
                 default:
                     return null;
             }

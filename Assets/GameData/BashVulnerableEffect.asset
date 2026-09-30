@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9ac457b4fd59a648a0048e173c58c9a, type: 3}
   m_Name: BashVulnerableEffect
   m_EditorClassIdentifier: Assembly-CSharp::VulnerableEffect
-  _vulnerable: 2
+  vulnerable: 2
