@@ -16,6 +16,7 @@ namespace Gameplay.Combat
         [SerializeField] private Deck.Deck deck;
         [SerializeField] private RumCup rumCup;
         [SerializeField] private PlayerHandUI playerHandUI;
+        private CombatState _combatState;
 
         private void Awake()
         {
@@ -25,6 +26,7 @@ namespace Gameplay.Combat
 
         private void Start()
         {
+            _combatState = CombatState.InProgress;
             PlayerTurn();
         }
 
@@ -93,6 +95,10 @@ namespace Gameplay.Combat
 
         private void EndPlayerTurn()
         {
+            if (_combatState != CombatState.InProgress)
+            {
+                return;
+            }
             if (_currentTurn == Turns.PlayerTurn)
             {
                 deck.DiscardHand();
@@ -116,6 +122,10 @@ namespace Gameplay.Combat
 
         private void EnemyTurn()
         {
+            if (_combatState != CombatState.InProgress)
+            {
+                return;
+            }
             _currentTurn = Turns.EnemyTurn;
             Debug.Log("Enemy turn");
             EnemyAction action = enemy.ExecuteIntent();
@@ -130,7 +140,10 @@ namespace Gameplay.Combat
                     Debug.Log($"Enemy blocked: {enemy.Block}");
                     break;
             }
-
+            if (_combatState != CombatState.InProgress)
+            {
+                return;
+            }
             enemy.ReduceVulnerable();
             enemy.ChooseNextIntent();
             Debug.Log("Enemy turn End");
@@ -139,6 +152,10 @@ namespace Gameplay.Combat
 
         public bool PlayCard(Card card)
         {
+            if (_combatState != CombatState.InProgress)
+            {
+                return false;
+            }
             Debug.Log("PlayCard called");
             if (deck.Hand.Contains(card))
             {
@@ -180,11 +197,13 @@ namespace Gameplay.Combat
         
         private void HandlePlayerDeath()
         {
+            _combatState = CombatState.Defeat;
             Debug.Log("COMBAT: Player died");
         }
         
         private void HandleEnemyDeath()
         {
+            _combatState = CombatState.Victory;
             Debug.Log("COMBAT: Enemy died");
         }
         
