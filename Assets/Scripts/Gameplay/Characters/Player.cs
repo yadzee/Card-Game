@@ -51,6 +51,8 @@ namespace Gameplay.Characters
         
         public event Action<int> OnEnergyChanged;
         public event Action<int> OnHealthChanged;
+        public event Action OnDeath;
+        
 
 
         private void Awake()
@@ -134,6 +136,7 @@ namespace Gameplay.Characters
             if (CurrentHealth <= 0 && !_isDead)
             {
                 _isDead = true;
+                OnDeath?.Invoke();
                 Debug.Log("Player is dead");
             }
         }

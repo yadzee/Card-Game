@@ -21,6 +21,7 @@ namespace Gameplay.Characters
 
         private int _maxHealth;
         public int MaxHealth => _maxHealth;
+        private bool _isDead;
 
         [SerializeField] private int block;
         [SerializeField] private int blockAmount;
@@ -41,6 +42,7 @@ namespace Gameplay.Characters
 
         [SerializeField] private EnemyIntent currentIntent;
         public event Action<int> OnHealthChanged;
+        public event Action OnDeath;
 
         public abstract int Attack();
 
@@ -75,6 +77,18 @@ namespace Gameplay.Characters
                 CurrentHealth -= currentDamage;
                 Debug.Log("Enemy HP: " + CurrentHealth);
                 Debug.Log($"Enemy has taken {currentDamage} damage");
+            }
+
+            CheckHealth();
+        }
+        
+        private void CheckHealth()
+        {
+            if (CurrentHealth <= 0 && !_isDead)
+            {
+                _isDead = true;
+                OnDeath?.Invoke();
+                Debug.Log("Enemy is dead");
             }
         }
 

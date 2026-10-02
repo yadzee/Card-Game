@@ -17,6 +17,12 @@ namespace Gameplay.Combat
         [SerializeField] private RumCup rumCup;
         [SerializeField] private PlayerHandUI playerHandUI;
 
+        private void Awake()
+        {
+            player.OnDeath += HandlePlayerDeath;
+            enemy.OnDeath += HandleEnemyDeath;
+        }
+
         private void Start()
         {
             PlayerTurn();
@@ -170,6 +176,16 @@ namespace Gameplay.Combat
             }
 
             return false;
+        }
+        
+        private void HandlePlayerDeath()
+        {
+            Debug.Log("COMBAT: Player died");
+        }
+        
+        private void HandleEnemyDeath()
+        {
+            Debug.Log("COMBAT: Enemy died");
         }
         
        
