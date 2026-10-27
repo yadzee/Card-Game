@@ -24,6 +24,7 @@ namespace UI
         {
             _playerHand = playerHand;
             _playerHand.OnCardSelected += HandleCardSelected;
+            combatController.OnCombatEnded += HandleCombatEnded;
         }
 
         public void AddCardToHand(Card card)
@@ -41,7 +42,8 @@ namespace UI
         
         public void AddCardsToHand(IReadOnlyList<Card> cards)
         {
-            StartCoroutine(AddCardsToHandRoutine(cards));
+            List<Card> cardsCopy = new List<Card>(cards);
+            StartCoroutine(AddCardsToHandRoutine(cardsCopy));
         }
 
         private IEnumerator AddCardsToHandRoutine(IReadOnlyList<Card> cards)
@@ -64,9 +66,20 @@ namespace UI
             }
         }
         
+        private void HandleCombatEnded(CombatState state)
+        {
+            _playerHand.ClearHand();
+        }
+        
         public void DiscardHand()
         {
             _playerHand.DiscardHand();
+        }
+        
+        private void OnDestroy()
+        {
+            _playerHand.OnCardSelected -= HandleCardSelected;
+            combatController.OnCombatEnded -= HandleCombatEnded;
         }
         
     }

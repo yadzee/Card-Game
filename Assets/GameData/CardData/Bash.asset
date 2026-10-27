@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a30cc65b43fe3478ddeac1f0f1e64e, type: 3}
   m_Name: Bash
   m_EditorClassIdentifier: Assembly-CSharp::CardData
+  _sprite: {fileID: 21300000, guid: 01678bcb104528c4aa751d3e1003b829, type: 3}
   _name: Bash
   _energyCost: 2
   _cardType: 0

@@ -13,6 +13,7 @@ namespace Tools.UI.Card
         void PlayCard(IUiCard uiCard);
         void SelectCard(IUiCard uiCard);
         void UnselectCard(IUiCard uiCard);
+        void ClearHand();
         void DiscardHand();
     }
 }

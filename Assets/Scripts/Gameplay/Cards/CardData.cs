@@ -7,6 +7,9 @@ namespace Gameplay.Cards
     [CreateAssetMenu(fileName = "CardData", menuName = "Scriptable Objects/CardData")]
     public class CardData : ScriptableObject
     {
+        [SerializeField] private Sprite _sprite;
+        public Sprite Sprite => _sprite;
+        
         [SerializeField] private string _name;
         public string Name => _name;
 

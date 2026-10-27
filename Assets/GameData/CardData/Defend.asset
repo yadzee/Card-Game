@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a30cc65b43fe3478ddeac1f0f1e64e, type: 3}
   m_Name: Defend
   m_EditorClassIdentifier: Assembly-CSharp::CardData
+  _sprite: {fileID: 21300000, guid: b270d821bb8945444abb66118c93a49e, type: 3}
   _name: Defend
   _energyCost: 1
   _cardType: 1

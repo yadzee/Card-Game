@@ -35,6 +35,7 @@ namespace Gameplay.Deck
             }
 
             _drawPile.Add(new Card(bashCardData));
+            Shuffle(_drawPile);
         }
 
         private Card DrawUpperCard()
@@ -107,18 +108,31 @@ namespace Gameplay.Deck
 
         private void ShuffleDiscardIntoDrawPile()
         {
-            for (int i = _discardPile.Count - 1; i > 0; i--)
-            {
-                int randomIndex = Random.Range(0, i + 1);
-
-                var temp = _discardPile[i];
-                _discardPile[i] = _discardPile[randomIndex];
-                _discardPile[randomIndex] = temp;
-            }
+            Shuffle(_discardPile);
 
             _drawPile.AddRange(_discardPile);
             _discardPile.Clear();
+
             Debug.Log("Shuffling discard into draw pile");
+        }
+        
+        private void Shuffle(List<Card> cards)
+        {
+            for (int i = cards.Count - 1; i > 0; i--)
+            {
+                int randomIndex = Random.Range(0, i + 1);
+
+                var temp = cards[i];
+                cards[i] = cards[randomIndex];
+                cards[randomIndex] = temp;
+            }
+        }
+        
+        public void AddRewardCard(CardData cardData)
+        {
+            // создать Card из CardData
+            // добавить Card в drawPile
+            _drawPile.Add(new Card(cardData));
         }
     }
 }

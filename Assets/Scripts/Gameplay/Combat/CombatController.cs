@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Gameplay.Cards;
 using Gameplay.Cards.Effects;
@@ -17,6 +18,7 @@ namespace Gameplay.Combat
         [SerializeField] private RumCup rumCup;
         [SerializeField] private PlayerHandUI playerHandUI;
         private CombatState _combatState;
+        public event Action<CombatState> OnCombatEnded;
 
         private void Awake()
         {
@@ -199,14 +201,15 @@ namespace Gameplay.Combat
         {
             _combatState = CombatState.Defeat;
             Debug.Log("COMBAT: Player died");
+            OnCombatEnded?.Invoke(CombatState.Defeat);
         }
         
         private void HandleEnemyDeath()
         {
             _combatState = CombatState.Victory;
             Debug.Log("COMBAT: Enemy died");
+            OnCombatEnded?.Invoke(CombatState.Victory);
         }
-        
        
     }
 }

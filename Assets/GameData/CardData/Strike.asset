@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a30cc65b43fe3478ddeac1f0f1e64e, type: 3}
   m_Name: Strike
   m_EditorClassIdentifier: Assembly-CSharp::CardData
+  _sprite: {fileID: 21300000, guid: 89f60889d073f3e47a791ec9137953e5, type: 3}
   _name: Strike
   _energyCost: 1
   _cardType: 0

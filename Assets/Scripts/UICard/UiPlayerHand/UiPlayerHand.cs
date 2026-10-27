@@ -138,6 +138,12 @@ namespace Tools.UI.Card
             }
         }
 
+        public void ClearHand()
+        {
+            SelectedCard = null;
+            Clear();
+        }
+
         [Button]
         void NotifyCardSelected() => OnCardSelected?.Invoke(SelectedCard);
 
