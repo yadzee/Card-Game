@@ -7,8 +7,8 @@ namespace Tools.UI.Card
     /// </summary>
     public abstract class UiBaseCardState : IState
     {
-        const int LayerToRenderNormal = 0;
-        const int LayerToRenderTop = 1;
+        private const int SortingOrderOffset = 10;
+        private readonly int[] _originalSortingOrders;
 
         //--------------------------------------------------------------------------------------------------------------
 
@@ -19,6 +19,14 @@ namespace Tools.UI.Card
             Fsm = fsm;
             Handler = handler;
             Parameters = parameters;
+
+            _originalSortingOrders = new int[Handler.Renderers.Length];
+
+            for (var i = 0; i < Handler.Renderers.Length; i++)
+            {
+                _originalSortingOrders[i] = Handler.Renderers[i].sortingOrder;
+            }
+
             IsInitialized = true;
         }
 
@@ -39,7 +47,13 @@ namespace Tools.UI.Card
         protected virtual void MakeRenderFirst()
         {
             for (var i = 0; i < Handler.Renderers.Length; i++)
-                Handler.Renderers[i].sortingOrder = LayerToRenderTop;
+            {
+                if (Handler.Renderers[i])
+                {
+                    Handler.Renderers[i].sortingOrder =
+                        _originalSortingOrders[i] + SortingOrderOffset;
+                }
+            }
         }
 
 
@@ -49,8 +63,12 @@ namespace Tools.UI.Card
         protected virtual void MakeRenderNormal()
         {
             for (var i = 0; i < Handler.Renderers.Length; i++)
+            {
                 if (Handler.Renderers[i])
-                    Handler.Renderers[i].sortingOrder = LayerToRenderNormal;
+                {
+                    Handler.Renderers[i].sortingOrder = _originalSortingOrders[i];
+                }
+            }
         }
 
         /// <summary>

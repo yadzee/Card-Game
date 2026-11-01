@@ -21,7 +21,7 @@ namespace Tools.UI.Card
             MyInput = GetComponent<IMouseInput>();
             Hand = transform.parent.GetComponentInChildren<IUiPlayerHand>();
             MyRenderers = GetComponentsInChildren<SpriteRenderer>();
-            MyRenderer = GetComponent<SpriteRenderer>();
+            MyRenderer = GetComponentInChildren<SpriteRenderer>();
 
             //transform
             Scale = new UiMotionScaleCard(this);

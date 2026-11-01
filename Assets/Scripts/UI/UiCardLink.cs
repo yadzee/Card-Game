@@ -12,12 +12,6 @@ namespace UI
         public void Initialize(Card card)
         {
             _card = card;
-
-            UiTexturePicker texturePicker =
-                GetComponentInChildren<UiTexturePicker>();
-
-            if (texturePicker != null)
-                texturePicker.SetSprite(card.Sprite);
         }
     }
 }
