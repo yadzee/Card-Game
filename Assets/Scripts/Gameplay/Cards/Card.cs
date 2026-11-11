@@ -9,6 +9,7 @@ namespace Gameplay.Cards
         private readonly CardData _cardData;
 
         public string Name => _cardData.Name;
+        public string Description => _cardData.Description;
         public int EnergyCost => _cardData.EnergyCost;
         public CardType CardType => _cardData.CardType;
         public IReadOnlyList<CardEffect> CardEffects => _cardData.CardEffects;

@@ -4,13 +4,9 @@ namespace Tools.UI.Card
 {
     public class UiTexturePicker : MonoBehaviour
     {
-        private SpriteRenderer MyRenderer { get; set; }
+        private SpriteRenderer MyRenderer => GetComponent<SpriteRenderer>();
 
-        private void Awake()
-        {
-            MyRenderer = GetComponent<SpriteRenderer>();
-        }
-
+        
         public void SetSprite(Sprite sprite)
         {
             if (sprite == null)

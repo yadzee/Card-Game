@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a30cc65b43fe3478ddeac1f0f1e64e, type: 3}
   m_Name: Bash
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  _sprite: {fileID: 21300000, guid: 01678bcb104528c4aa751d3e1003b829, type: 3}
-  _name: Bash
+  _sprite: {fileID: 21300000, guid: 6e69469600fa42640b547dfb254087eb, type: 3}
+  _name: "\u041F\u0438\u043B\u0430"
+  _description: "\u041D\u0430\u043D\u043E\u0441\u0438\u0442 8 \u0443\u0440\u043E\u043D\u0430
+    \u0438 \u043D\u0430\u043A\u043B\u0430\u0434\u044B\u0432\u0430\u0435\u0442 2 \u0443\u044F\u0437\u0432\u0438\u043C\u043E\u0441\u0442\u0438"
   _energyCost: 2
   _cardType: 0
   _cardEffects:

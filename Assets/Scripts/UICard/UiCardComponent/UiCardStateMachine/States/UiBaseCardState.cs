@@ -1,4 +1,5 @@
-﻿using Patterns.StateMachine;
+﻿
+using Patterns.StateMachine;
 
 namespace Tools.UI.Card
 {
@@ -8,7 +9,7 @@ namespace Tools.UI.Card
     public abstract class UiBaseCardState : IState
     {
         private const int SortingOrderOffset = 10;
-        private readonly int[] _originalSortingOrders;
+        private readonly int _originalSortingOrder;
 
         //--------------------------------------------------------------------------------------------------------------
 
@@ -20,12 +21,7 @@ namespace Tools.UI.Card
             Handler = handler;
             Parameters = parameters;
 
-            _originalSortingOrders = new int[Handler.Renderers.Length];
-
-            for (var i = 0; i < Handler.Renderers.Length; i++)
-            {
-                _originalSortingOrders[i] = Handler.Renderers[i].sortingOrder;
-            }
+            _originalSortingOrder = Handler.SortingGroup.sortingOrder;
 
             IsInitialized = true;
         }
@@ -42,42 +38,30 @@ namespace Tools.UI.Card
         #region Operations
 
         /// <summary>
-        ///     Renders the textures in the first layer. Each card state is responsible to handle its own layer activity.
+        ///     Renders the entire card in the first layer.
         /// </summary>
         protected virtual void MakeRenderFirst()
         {
-            for (var i = 0; i < Handler.Renderers.Length; i++)
-            {
-                if (Handler.Renderers[i])
-                {
-                    Handler.Renderers[i].sortingOrder =
-                        _originalSortingOrders[i] + SortingOrderOffset;
-                }
-            }
+            Handler.SortingGroup.sortingOrder =
+                _originalSortingOrder + SortingOrderOffset;
         }
 
-
         /// <summary>
-        ///     Renders the textures in the regular layer. Each card state is responsible to handle its own layer activity.
+        ///     Restores the original sorting order of the card.
         /// </summary>
         protected virtual void MakeRenderNormal()
         {
-            for (var i = 0; i < Handler.Renderers.Length; i++)
-            {
-                if (Handler.Renderers[i])
-                {
-                    Handler.Renderers[i].sortingOrder = _originalSortingOrders[i];
-                }
-            }
+            Handler.SortingGroup.sortingOrder = _originalSortingOrder;
         }
 
         /// <summary>
-        ///     Enables the card entirely. Collision, Rigidybody and adds Alpha.
+        ///     Enables the card entirely. Collision, Rigidbody and Alpha.
         /// </summary>
         protected void Enable()
         {
             if (Handler.Collider)
                 EnableCollision();
+
             if (Handler.Rigidbody)
                 Handler.Rigidbody.Sleep();
 
@@ -86,13 +70,14 @@ namespace Tools.UI.Card
         }
 
         /// <summary>
-        ///     Disables the card entirely. Collision, Rigidybody and adds Alpha.
+        ///     Disables the card entirely. Collision, Rigidbody and Alpha.
         /// </summary>
         protected virtual void Disable()
         {
             DisableCollision();
             Handler.Rigidbody.Sleep();
             MakeRenderNormal();
+
             foreach (var renderer in Handler.Renderers)
             {
                 var myColor = renderer.color;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Patterns.StateMachine
 {
@@ -13,7 +14,10 @@ namespace Patterns.StateMachine
         ///     Constructor for the state machine. A handler is optional.
         /// </summary>
         /// <param name="handler"></param>
-        protected BaseStateMachine(IStateMachineHandler handler = null) => Handler = handler;
+        protected BaseStateMachine(IStateMachineHandler handler = null)
+        {
+            Handler = handler;
+        }
 
         #endregion
 
@@ -29,12 +33,12 @@ namespace Patterns.StateMachine
         /// <summary>
         ///     Stack of States.
         /// </summary>
-        readonly Stack<IState> stack = new Stack<IState>();
+        private readonly Stack<IState> stack = new Stack<IState>();
 
         /// <summary>
         ///     This register doesn't allow the FSM to have two states with the same Type.
         /// </summary>
-        readonly Dictionary<Type, IState> register = new Dictionary<Type, IState>();
+        private readonly Dictionary<Type, IState> register = new Dictionary<Type, IState>();
 
         /// <summary>
         ///     Handler for the FSM. Usually the Monobehavior which holds this FSM.
@@ -59,11 +63,16 @@ namespace Patterns.StateMachine
         public void RegisterState(IState state)
         {
             if (state == null)
-                throw new ArgumentNullException("Null is not a valid state");
+                throw new ArgumentNullException(nameof(state), "Null is not a valid state");
 
             var type = state.GetType();
             register.Add(type, state);
-            Logger.Instance.Log<BaseStateMachine>(Handler.Name + ", Registered: ", "black", type);
+
+            Logger.Instance.Log<BaseStateMachine>(
+                Handler.Name + ", Registered: ",
+                "black",
+                type
+            );
         }
 
         /// <summary>
@@ -82,7 +91,10 @@ namespace Patterns.StateMachine
 
             OnInitialize();
 
-            Logger.Instance.Log<BaseStateMachine>(Handler.Name + ", Initialized! ", "yellow");
+            Logger.Instance.Log<BaseStateMachine>(
+                Handler.Name + ", Initialized! ",
+                "yellow"
+            );
         }
 
         /// <summary>
@@ -114,15 +126,16 @@ namespace Patterns.StateMachine
         ///     Checks whether a Type is the same as the Type as the current state.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public bool IsCurrent<T>() where T : IState => Current?.GetType() == typeof(T);
+        public bool IsCurrent<T>() where T : IState =>
+            Current?.GetType() == typeof(T);
 
         /// <summary>
-        ///     Checks if a an StateType is the current state.
+        ///     Checks if a StateType is the current state.
         /// </summary>
         public bool IsCurrent(IState state)
         {
             if (state == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(state));
 
             return Current?.GetType() == state.GetType();
         }
@@ -136,6 +149,7 @@ namespace Patterns.StateMachine
         {
             var stateType = typeof(T);
             var state = register[stateType];
+
             PushState(state, isSilent);
         }
 
@@ -148,10 +162,16 @@ namespace Patterns.StateMachine
         public void PushState(IState state, bool isSilent = false)
         {
             var type = state.GetType();
+
             if (!register.ContainsKey(type))
                 throw new ArgumentException("State " + state + " not registered yet.");
 
-            Logger.Instance.Log<BaseStateMachine>(Handler.Name + ", Push state: ", "green", type);
+            Logger.Instance.Log<BaseStateMachine>(
+                Handler.Name + ", Push state: ",
+                "green",
+                type
+            );
+
             if (stack.Count > 0 && !isSilent)
                 Current?.OnExitState();
 
@@ -163,7 +183,8 @@ namespace Patterns.StateMachine
         ///     Peeks a state from the stack. A peek returns null if the stack is empty. It doesn't trigger any call.
         /// </summary>
         /// <returns></returns>
-        public IState PeekState() => stack.Count > 0 ? stack.Peek() : null;
+        public IState PeekState() =>
+            stack.Count > 0 ? stack.Peek() : null;
 
         /// <summary>
         ///     Pops a state from the stack. It triggers OnExitState for the
@@ -176,11 +197,37 @@ namespace Patterns.StateMachine
                 return;
 
             var state = stack.Pop();
-            Logger.Instance.Log<BaseStateMachine>(Handler.Name + ", Pop state: ", "purple", state.GetType());
+
+            Logger.Instance.Log<BaseStateMachine>(
+                Handler.Name + ", Pop state: ",
+                "purple",
+                state.GetType()
+            );
+
             state.OnExitState();
 
             if (!isSilent)
                 Current?.OnEnterState();
+        }
+
+        /// <summary>
+        ///     Replaces the current state with a new one.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="isSilent"></param>
+        public void ChangeState<T>(bool isSilent = false) where T : IState
+        {
+            var stateType = typeof(T);
+            var state = register[stateType];
+            var previousState = Current;
+
+            if (previousState != null && !isSilent)
+                previousState.OnExitState();
+
+            stack.Clear();
+            stack.Push(state);
+
+            state.OnEnterState();
         }
 
         /// <summary>

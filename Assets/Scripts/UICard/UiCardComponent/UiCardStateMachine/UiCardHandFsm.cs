@@ -54,19 +54,19 @@ namespace Tools.UI.Card
 
         #region Operations
 
-        public void Hover() => PushState<UiCardHover>();
+        public void Hover() => ChangeState<UiCardHover>();
 
-        public void Disable() => PushState<UiCardDisable>();
+        public void Disable() => ChangeState<UiCardDisable>();
 
-        public void Enable() => PushState<UiCardIdle>();
+        public void Enable() => ChangeState<UiCardIdle>();
 
-        public void Select() => PushState<UiCardDrag>();
+        public void Select() => ChangeState<UiCardDrag>();
 
         public void Unselect() => Enable();
 
-        public void Draw() => PushState<UiCardDraw>();
+        public void Draw() => ChangeState<UiCardDraw>();
 
-        public void Discard() => PushState<UiCardDiscard>();
+        public void Discard() => ChangeState<UiCardDiscard>();
 
         #endregion
 

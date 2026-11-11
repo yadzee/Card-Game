@@ -1,5 +1,6 @@
 ﻿using Extensions;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Tools.UI.Card
 {
@@ -12,9 +13,10 @@ namespace Tools.UI.Card
 
         #region Unity Callbacks
 
+        
         void Awake()
         {
-            //components
+            // components
             MyTransform = transform;
             MyCollider = GetComponent<Collider>();
             MyRigidbody = GetComponent<Rigidbody>();
@@ -22,15 +24,17 @@ namespace Tools.UI.Card
             Hand = transform.parent.GetComponentInChildren<IUiPlayerHand>();
             MyRenderers = GetComponentsInChildren<SpriteRenderer>();
             MyRenderer = GetComponentInChildren<SpriteRenderer>();
+            MySortingGroup = GetComponent<SortingGroup>();
 
-            //transform
+            // transform
             Scale = new UiMotionScaleCard(this);
             Movement = new UiMotionMovementCard(this);
             Rotation = new UiMotionRotationCard(this);
 
-            //fsm
+            // fsm
             Fsm = new UiCardHandFsm(MainCamera, cardConfigsParameters, this);
         }
+
 
         void Update()
         {
@@ -52,6 +56,7 @@ namespace Tools.UI.Card
         Rigidbody IUiCardComponents.Rigidbody => MyRigidbody;
         IMouseInput IUiCardComponents.Input => MyInput;
         IUiPlayerHand IUiCard.Hand => Hand;
+        SortingGroup IUiCardComponents.SortingGroup => MySortingGroup;
 
         #endregion
 
@@ -81,6 +86,7 @@ namespace Tools.UI.Card
         public bool IsHovering => Fsm.IsCurrent<UiCardHover>();
         public bool IsDisabled => Fsm.IsCurrent<UiCardDisable>();
         public bool IsPlayer => transform.CloserEdge(MainCamera, Screen.width, Screen.height) == 1;
+        SortingGroup MySortingGroup { get; set; }
 
         #endregion
 

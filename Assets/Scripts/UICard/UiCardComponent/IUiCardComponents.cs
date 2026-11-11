@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Tools.UI.Card
 {
@@ -16,5 +17,6 @@ namespace Tools.UI.Card
         MonoBehaviour MonoBehavior { get; }
         GameObject gameObject { get; }
         Transform transform { get; }
+        SortingGroup SortingGroup { get; }
     }
 }

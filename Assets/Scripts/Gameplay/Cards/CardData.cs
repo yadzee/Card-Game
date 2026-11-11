@@ -13,6 +13,9 @@ namespace Gameplay.Cards
         [SerializeField] private string _name;
         public string Name => _name;
 
+        [SerializeField] private string _description;
+        public string Description => _description;
+
         [SerializeField] private int _energyCost;
         public int EnergyCost => _energyCost;
         [SerializeField] private CardType _cardType;
