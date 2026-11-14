@@ -6,6 +6,7 @@ using Gameplay.Characters;
 using Gameplay.Relics;
 using UI;
 using UnityEngine;
+using Gameplay.Rewards;
 
 namespace Gameplay.Combat
 {
@@ -17,6 +18,7 @@ namespace Gameplay.Combat
         [SerializeField] private Deck.Deck deck;
         [SerializeField] private RumCup rumCup;
         [SerializeField] private PlayerHandUI playerHandUI;
+        [SerializeField] private RewardController rewardController;
         private CombatState _combatState;
         public event Action<CombatState> OnCombatEnded;
 
@@ -208,6 +210,9 @@ namespace Gameplay.Combat
         {
             _combatState = CombatState.Victory;
             Debug.Log("COMBAT: Enemy died");
+
+            rewardController.GenerateRewards();
+
             OnCombatEnded?.Invoke(CombatState.Victory);
         }
        
