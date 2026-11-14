@@ -4271,7 +4271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Rewards.RewardUI
   rewardController: {fileID: 1554128846}
-  cardPrefab: {fileID: 3245573509686006908, guid: da89c93580533da4abe22dd655a7d0ca, type: 3}
+  cardPrefab: {fileID: 3245573509686006908, guid: 8f3b756031c238b429d168c744958354, type: 3}
   cardContainer: {fileID: 2062249197}
 --- !u!224 &2065071533 stripped
 RectTransform:
