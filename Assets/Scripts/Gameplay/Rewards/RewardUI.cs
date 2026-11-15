@@ -1,3 +1,4 @@
+
 using Gameplay.Cards;
 using UnityEngine;
 using Gameplay.Combat;
@@ -12,14 +13,27 @@ namespace Gameplay.Rewards
         [SerializeField] private GameObject cardPrefab;
         [SerializeField] private CombatController combatController;
 
+        [Header("Reward Screen")]
+        [SerializeField] private GameObject rewardPanel;
+        [SerializeField] private GameObject rewardBackground;
+        [SerializeField] private GameObject rewardForegroundCanvas;
+
         [Header("Card Display")]
         [SerializeField] private Transform[] cardSlots;
-        
+
         private bool _isRewardResolved;
-        
+
         private void Awake()
         {
+            if (combatController == null)
+            {
+                Debug.LogError("RewardUI: CombatController reference is missing.");
+                return;
+            }
+
             combatController.OnCombatEnded += HandleCombatEnded;
+
+            SetRewardScreenVisible(false);
         }
 
         private void HandleCombatEnded(CombatState state)
@@ -38,16 +52,29 @@ namespace Gameplay.Rewards
 
         public void ShowRewards()
         {
-            if (rewardController == null || cardPrefab == null || cardSlots == null)
+            if (rewardController == null ||
+                cardPrefab == null ||
+                cardSlots == null ||
+                rewardPanel == null ||
+                rewardBackground == null ||
+                rewardForegroundCanvas == null)
             {
                 Debug.LogError("RewardUI: Missing references in Inspector.");
                 return;
             }
-            
+
             _isRewardResolved = false;
             ClearRewards();
 
             int rewardCount = rewardController.CurrentRewards.Count;
+
+            if (rewardCount == 0)
+            {
+                Debug.LogWarning("RewardUI: No rewards to display.");
+                return;
+            }
+
+            SetRewardScreenVisible(true);
 
             if (rewardCount > cardSlots.Length)
             {
@@ -79,8 +106,9 @@ namespace Gameplay.Rewards
 
                 Card card = new Card(cardData);
                 cardLink.Initialize(card);
-                
-                RewardCardSelector selector = cardObject.GetComponent<RewardCardSelector>();
+
+                RewardCardSelector selector =
+                    cardObject.GetComponent<RewardCardSelector>();
 
                 if (selector == null)
                 {
@@ -96,8 +124,18 @@ namespace Gameplay.Rewards
             Debug.Log($"RewardUI: Displayed {cardsToDisplay} rewards.");
         }
 
+        private void SetRewardScreenVisible(bool isVisible)
+        {
+            rewardPanel.SetActive(isVisible);
+            rewardBackground.SetActive(isVisible);
+            rewardForegroundCanvas.SetActive(isVisible);
+        }
+
         private void ClearRewards()
         {
+            if (cardSlots == null)
+                return;
+
             foreach (Transform slot in cardSlots)
             {
                 if (slot == null)
@@ -109,7 +147,7 @@ namespace Gameplay.Rewards
                 }
             }
         }
-        
+
         private void HandleRewardSelected(CardData cardData)
         {
             if (_isRewardResolved)
@@ -120,9 +158,31 @@ namespace Gameplay.Rewards
                 _isRewardResolved = true;
 
                 ClearRewards();
+                SetRewardScreenVisible(false);
 
                 Debug.Log($"RewardUI: Selected reward - {cardData.Name}");
             }
+        }
+        
+        public void HandleSkipButtonClicked()
+        {
+            if (_isRewardResolved)
+                return;
+
+            if (rewardController == null)
+            {
+                Debug.LogError("RewardUI: RewardController reference is missing.");
+                return;
+            }
+
+            rewardController.SkipRewards();
+
+            _isRewardResolved = true;
+
+            ClearRewards();
+            SetRewardScreenVisible(false);
+
+            Debug.Log("RewardUI: Rewards skipped.");
         }
     }
 }

@@ -36,7 +36,9 @@ namespace Gameplay.Combat
 
         private void Update()
         {
-            // CombatController.Update()
+            if (_combatState != CombatState.InProgress)
+                return;
+            
             if (Input.GetKeyDown(KeyCode.B))
             {
                 foreach (var card in deck.Hand)
@@ -77,6 +79,11 @@ namespace Gameplay.Combat
             {
                 EndPlayerTurn();
             }
+            
+            if (Input.GetKeyDown(KeyCode.F8))
+            {
+                enemy.TakeDamage(enemy.CurrentHealth);
+            }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
@@ -111,10 +118,17 @@ namespace Gameplay.Combat
                 EnemyTurn();
             }
         }
+        
+        public void HandleEndTurnButtonClicked()
+        {
+            EndPlayerTurn();
+        }
 
         private void PlayerTurn()
         {
-            // _endTurn = false;
+            if (_combatState != CombatState.InProgress)
+                return;
+
             player.ResetEnergy();
             player.ResetBlock();
             deck.DrawCards(5);

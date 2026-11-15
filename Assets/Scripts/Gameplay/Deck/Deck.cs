@@ -16,7 +16,7 @@ namespace Gameplay.Deck
         public CardData strikeCardData;
         public CardData defenceCardData;
         public CardData bashCardData;
-
+        
 
         private void Awake()
         {
@@ -130,9 +130,10 @@ namespace Gameplay.Deck
         
         public void AddRewardCard(CardData cardData)
         {
-            // создать Card из CardData
-            // добавить Card в drawPile
             _drawPile.Add(new Card(cardData));
+
+            Debug.Log($"Reward added to draw pile: {cardData.Name}");
+            Debug.Log($"Current draw pile size: {_drawPile.Count}");
         }
     }
 }
