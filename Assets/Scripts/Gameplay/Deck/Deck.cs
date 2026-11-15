@@ -17,6 +17,9 @@ namespace Gameplay.Deck
         public CardData defenceCardData;
         public CardData bashCardData;
         
+        public IReadOnlyList<Card> DrawPile => _drawPile;
+        public IReadOnlyList<Card> DiscardPile => _discardPile;
+        
 
         private void Awake()
         {
