@@ -538,7 +538,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 32001
   m_SortAtRoot: 1
   m_Sort3DAs2D: 0
 --- !u!65 &5781600191009963845

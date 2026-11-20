@@ -27,16 +27,17 @@ namespace Gameplay.Deck
             _discardPile = new List<Card>();
             _handDeck = new List<Card>();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
                 _drawPile.Add(new Card(strikeCardData));
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 8; i++)
             {
                 _drawPile.Add(new Card(defenceCardData));
             }
 
+            _drawPile.Add(new Card(bashCardData));
             _drawPile.Add(new Card(bashCardData));
             Shuffle(_drawPile);
         }

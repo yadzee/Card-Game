@@ -486,6 +486,7 @@ GameObject:
   - component: {fileID: 2144038176792078896}
   - component: {fileID: 2144038176792078899}
   - component: {fileID: 2144038176792078910}
+  - component: {fileID: 93264015910921601}
   m_Layer: 0
   m_Name: Deck
   m_TagString: Untagged
@@ -528,7 +529,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.1259575, y: 4.271981, z: 0}
+  m_Size: {x: 3.1259575, y: 4.271981, z: 0.5}
   m_Center: {x: 0, y: -0.008303404, z: 0}
 --- !u!114 &2144038176792078896
 MonoBehaviour:
@@ -549,11 +550,24 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144038176792078901}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5a8d2b1faf862e44abfc7febb361561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &93264015910921601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144038176792078901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f12e607a224391b0d63c440234cb7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI.DeckPileViewerClick
+  pileType: 0
 --- !u!114 &2144038176792078910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,6 +597,7 @@ GameObject:
   - component: {fileID: 2144038176815076908}
   - component: {fileID: 2144038176815076904}
   - component: {fileID: 2144038176815076907}
+  - component: {fileID: 93264015910921602}
   m_Layer: 0
   m_Name: Graveyard
   m_TagString: Untagged
@@ -625,7 +640,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.1259575, y: 4.271981, z: 0}
+  m_Size: {x: 3.1259575, y: 4.271981, z: 0.5}
   m_Center: {x: 0, y: -0.008303404, z: 0}
 --- !u!114 &2144038176815076909
 MonoBehaviour:
@@ -646,11 +661,24 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144038176815076910}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ce07dbbc3a0f0f4a84f7be49245026f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &93264015910921602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144038176815076910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f12e607a224391b0d63c440234cb7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI.DeckPileViewerClick
+  pileType: 1
 --- !u!114 &2144038176815076904
 MonoBehaviour:
   m_ObjectHideFlags: 0
