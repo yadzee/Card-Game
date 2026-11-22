@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Gameplay.Cards;
 using Gameplay.Deck;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UI
 {
-    public class DeckViewer : MonoBehaviour
+    public class DeckViewer : MonoBehaviour, IScrollHandler
     {
         [Header("References")]
         [SerializeField] private Deck deck;
@@ -26,6 +27,8 @@ namespace UI
         [SerializeField] private Vector2 spacing;
         [SerializeField, Min(1f)] private float visibleRows = 2.5f;
         [SerializeField] private Scrollbar pileScrollbar;
+        [SerializeField, Min(0f)] private float mouseWheelScrollSensitivity = 1.5f;
+        [SerializeField, Min(0.01f)] private float mouseWheelSmoothTime = 0.12f;
         [SerializeField, Min(0.01f)] private float cardsReferenceCanvasScale = 1f;
 
         private Camera _mainCamera;
@@ -40,6 +43,9 @@ namespace UI
         private bool _cardsParentInitialPositionCaptured;
         private float _maxScrollOffset;
         private float _scrollProgress;
+        private float _wheelTargetScrollbarValue = 1f;
+        private float _wheelScrollVelocity;
+        private bool _isApplyingWheelScrollValue;
         public bool IsOpen => viewerPanel != null && viewerPanel.activeSelf;
 
         private void LateUpdate()
@@ -47,6 +53,7 @@ namespace UI
             if (!IsOpen)
                 return;
 
+            UpdateWheelScrollbar();
             UpdateCardsParentTransform();
             ResetScrollbarArtworkOffset();
 
@@ -180,6 +187,8 @@ namespace UI
                     ? GetScrollbarHandleSize()
                     : 1f;
                 pileScrollbar.SetValueWithoutNotify(1f);
+                _wheelTargetScrollbarValue = 1f;
+                _wheelScrollVelocity = 0f;
                 ResetScrollbarArtworkOffset();
                 pileScrollbar.gameObject.SetActive(_maxScrollOffset > Mathf.Epsilon);
             }
@@ -230,9 +239,54 @@ namespace UI
             if (cardsParent == null || !_cardsParentInitialPositionCaptured)
                 return;
 
+            if (!_isApplyingWheelScrollValue)
+            {
+                _wheelTargetScrollbarValue = Mathf.Clamp01(value);
+                _wheelScrollVelocity = 0f;
+            }
+
             _scrollProgress = 1f - Mathf.Clamp01(value);
             UpdateCardsParentTransform();
             ResetScrollbarArtworkOffset();
+        }
+
+        public void OnScroll(PointerEventData eventData)
+        {
+            if (!IsOpen || pileScrollbar == null || !pileScrollbar.gameObject.activeInHierarchy ||
+                _maxScrollOffset <= Mathf.Epsilon || Mathf.Approximately(eventData.scrollDelta.y, 0f))
+                return;
+
+            float valueDelta = eventData.scrollDelta.y * mouseWheelScrollSensitivity / _maxScrollOffset;
+            _wheelTargetScrollbarValue = Mathf.Clamp01(_wheelTargetScrollbarValue + valueDelta);
+            eventData.Use();
+        }
+
+        private void UpdateWheelScrollbar()
+        {
+            if (pileScrollbar == null || !pileScrollbar.gameObject.activeInHierarchy)
+                return;
+
+            float currentValue = pileScrollbar.value;
+            if (Mathf.Approximately(currentValue, _wheelTargetScrollbarValue))
+                return;
+
+            float nextValue = Mathf.SmoothDamp(
+                currentValue,
+                _wheelTargetScrollbarValue,
+                ref _wheelScrollVelocity,
+                mouseWheelSmoothTime,
+                Mathf.Infinity,
+                Time.unscaledDeltaTime
+            );
+            if (Mathf.Abs(nextValue - _wheelTargetScrollbarValue) <= 0.001f)
+            {
+                nextValue = _wheelTargetScrollbarValue;
+                _wheelScrollVelocity = 0f;
+            }
+
+            _isApplyingWheelScrollValue = true;
+            pileScrollbar.value = nextValue;
+            _isApplyingWheelScrollValue = false;
         }
 
         private void CacheCardsParentTransform()
