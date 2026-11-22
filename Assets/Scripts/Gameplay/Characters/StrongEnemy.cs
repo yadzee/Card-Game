@@ -1,12 +1,9 @@
-using UnityEngine;
-
 namespace Gameplay.Characters
 {
     public class StrongEnemy : Enemy
     {
-        public override int Attack()
+        public override int CalculateAttackDamage()
         {
-            Debug.Log("Strong Enemy attacks");
             return DefaultDamage * 2;
         }
     }

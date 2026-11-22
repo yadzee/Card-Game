@@ -1,13 +1,9 @@
-using UnityEngine;
-
 namespace Gameplay.Characters
 {
     public class BasicEnemy : Enemy
     {
-        
-        public override int Attack()
+        public override int CalculateAttackDamage()
         {
-            Debug.Log("Basic Enemy attacks");
             return DefaultDamage + 3;
         }
     }

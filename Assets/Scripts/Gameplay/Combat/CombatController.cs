@@ -146,10 +146,13 @@ namespace Gameplay.Combat
             }
             _currentTurn = Turns.EnemyTurn;
             Debug.Log("Enemy turn");
+            Debug.Log($"[BLOCK TEST] Enemy Block at turn start: {enemy.Block}");
+            enemy.ResetBlock();
             EnemyAction action = enemy.ExecuteIntent();
             switch (action.Intent)
             {
                 case EnemyIntent.Attack:
+                    Debug.Log($"Enemy attacks player for {action.Value} damage");
                     player.TakeDamage(action.Value);
                     break;
 

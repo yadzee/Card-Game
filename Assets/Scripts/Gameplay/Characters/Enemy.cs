@@ -22,6 +22,7 @@ namespace Gameplay.Characters
         private int _maxHealth;
         public int MaxHealth => _maxHealth;
         private bool _isDead;
+        
 
         [SerializeField] private int block;
         [SerializeField] private int blockAmount;
@@ -31,7 +32,7 @@ namespace Gameplay.Characters
             get => block;
             set => block = value >= 0 ? value : 0;
         }
-
+        
         private int _vulnerable;
 
         public int Vulnerable
@@ -41,45 +42,59 @@ namespace Gameplay.Characters
         }
 
         [SerializeField] private EnemyIntent currentIntent;
+        public EnemyIntent CurrentIntent => currentIntent;
+
+        public int IntentValue => GetIntentValue();
+
+        private int GetIntentValue()
+        {
+            return currentIntent switch
+            {
+                EnemyIntent.Attack => CalculateAttackDamage(),
+                EnemyIntent.Block => blockAmount,
+                _ => 0
+            };
+        }
         public event Action<int> OnHealthChanged;
         public event Action OnDeath;
+        public event Action<EnemyIntent, int> OnIntentChanged;
 
-        public abstract int Attack();
+        public abstract int CalculateAttackDamage();
 
 
         private void Awake()
         {
             _maxHealth = 30;
             CurrentHealth = _maxHealth;
+            NotifyIntentChanged();
         }
 
 
         public void TakeDamage(int damage)
         {
             Debug.Log($"Enemy TakeDamage: damage={damage}, block={Block}, health={CurrentHealth}");
+
             if (Vulnerable > 0)
             {
                 damage = Mathf.FloorToInt(damage * 1.5f);
             }
 
-            var currentDamage = damage;
+            int blockedDamage = Mathf.Min(Block, damage);
+            Block -= blockedDamage;
 
-            currentDamage -= Block;
-            Block -= damage;
+            int currentDamage = damage - blockedDamage;
+            CurrentHealth -= currentDamage;
 
-            if (currentDamage <= 0)
-            {
-                currentDamage = 0;
-            }
-
-            if (Block == 0)
-            {
-                CurrentHealth -= currentDamage;
-                Debug.Log("Enemy HP: " + CurrentHealth);
-                Debug.Log($"Enemy has taken {currentDamage} damage");
-            }
+            Debug.Log($"Enemy HP: {CurrentHealth}");
+            Debug.Log($"Enemy has taken {currentDamage} damage");
 
             CheckHealth();
+        }
+        
+        public void ResetBlock()
+        {
+            Block = 0;
+            Debug.Log("ResetBlock. Current Block: " + Block);
         }
         
         private void CheckHealth()
@@ -116,6 +131,7 @@ namespace Gameplay.Characters
         public void ChooseNextIntent()
         {
             currentIntent = (EnemyIntent)UnityEngine.Random.Range(0, 2);
+            NotifyIntentChanged();
         }
 
         public EnemyAction ExecuteIntent()
@@ -123,12 +139,21 @@ namespace Gameplay.Characters
             switch (currentIntent)
             {
                 case EnemyIntent.Attack:
-                    return new EnemyAction(EnemyIntent.Attack, Attack());
+                    return new EnemyAction(EnemyIntent.Attack, CalculateAttackDamage());
+
                 case EnemyIntent.Block:
                     return new EnemyAction(EnemyIntent.Block, blockAmount);
+
                 default:
                     return null;
             }
         }
+        
+        private void NotifyIntentChanged()
+        {
+            OnIntentChanged?.Invoke(CurrentIntent, IntentValue);
+            Debug.Log($"New enemy intent: {CurrentIntent}, Value: {IntentValue}");
+        }
+        
     }
 }
