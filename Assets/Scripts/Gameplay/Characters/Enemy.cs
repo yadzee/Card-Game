@@ -34,11 +34,14 @@ namespace Gameplay.Characters
         }
         
         private int _vulnerable;
-
         public int Vulnerable
         {
             get => _vulnerable;
-            private set => _vulnerable = value >= 0 ? value : 0;
+            private set
+            {
+                _vulnerable = value >= 0 ? value : 0;
+                OnVulnerableChanged?.Invoke(_vulnerable);
+            }
         }
 
         [SerializeField] private EnemyIntent currentIntent;
@@ -58,6 +61,7 @@ namespace Gameplay.Characters
         public event Action<int> OnHealthChanged;
         public event Action OnDeath;
         public event Action<EnemyIntent, int> OnIntentChanged;
+        public event Action<int> OnVulnerableChanged;
 
         public abstract int CalculateAttackDamage();
 
