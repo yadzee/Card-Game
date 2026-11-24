@@ -30,7 +30,16 @@ namespace Gameplay.Characters
         public int Block
         {
             get => block;
-            set => block = value >= 0 ? value : 0;
+            set
+            {
+                int newBlock = Mathf.Max(0, value);
+
+                if (block == newBlock)
+                    return;
+
+                block = newBlock;
+                OnBlockChanged?.Invoke(block);
+            }
         }
         
         private int _vulnerable;
@@ -62,6 +71,7 @@ namespace Gameplay.Characters
         public event Action OnDeath;
         public event Action<EnemyIntent, int> OnIntentChanged;
         public event Action<int> OnVulnerableChanged;
+        public event Action<int> OnBlockChanged;
 
         public abstract int CalculateAttackDamage();
 

@@ -46,12 +46,22 @@ namespace Gameplay.Characters
         public int Block
         {
             get => _block;
-            private set => _block = value >= 0 ? value : 0;
+            private set
+            {
+                int newBlock = Mathf.Max(0, value);
+
+                if (_block == newBlock)
+                    return;
+
+                _block = newBlock;
+                OnBlockChanged?.Invoke(_block);
+            }
         }
         
         public event Action<int> OnEnergyChanged;
         public event Action<int> OnHealthChanged;
         public event Action OnDeath;
+        public event Action<int> OnBlockChanged;
         
 
 
