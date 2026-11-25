@@ -17,12 +17,14 @@ namespace Gameplay.Combat
         private Turns _currentTurn;
         [SerializeField] private Player player;
         [SerializeField] private Enemy enemy;
-        [SerializeField] private EnemyAnimationController enemyAnimationController;
-        [SerializeField] private PlayerAnimationController playerAnimationController;
         [SerializeField] private Deck.Deck deck;
         [SerializeField] private RumCup rumCup;
         [SerializeField] private PlayerHandUI playerHandUI;
+        [SerializeField] private EnemyIntentUI enemyIntentUI;
         [SerializeField] private RewardController rewardController;
+        [SerializeField] private EnemyAnimationController enemyAnimationController;
+        [SerializeField] private PlayerAnimationController playerAnimationController;
+
         private CombatState _combatState;
         public event Action<CombatState> OnCombatEnded;
 
@@ -141,6 +143,8 @@ namespace Gameplay.Combat
             Debug.Log($"Cards in hand: {deck.Hand.Count}");
             playerHandUI.AddCardsToHand(deck.Hand);
             _currentTurn = Turns.PlayerTurn;
+            enemyIntentUI.PlayFadeIn();
+
             Debug.Log("Player turn " + _currentTurn);
         }
 
@@ -150,6 +154,8 @@ namespace Gameplay.Combat
                 yield break;
 
             _currentTurn = Turns.EnemyTurn;
+            yield return StartCoroutine(enemyIntentUI.PlayScalePulse());
+            yield return StartCoroutine(enemyIntentUI.FadeOut());
 
             Debug.Log("Enemy turn");
             Debug.Log($"[BLOCK TEST] Enemy Block at turn start: {enemy.Block}");
