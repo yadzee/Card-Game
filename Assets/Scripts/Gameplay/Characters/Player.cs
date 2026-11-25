@@ -62,6 +62,7 @@ namespace Gameplay.Characters
         public event Action<int> OnHealthChanged;
         public event Action OnDeath;
         public event Action<int> OnBlockChanged;
+        public event Action<int> OnHealthDamageTaken;
         
 
 
@@ -110,37 +111,32 @@ namespace Gameplay.Characters
 
         public void TakeDamage(int damage)
         {
-            if (!_isDead)
+            if (_isDead)
+                return;
+
+            int healthBeforeDamage = CurrentHealth;
+
+            int currentDamage = Mathf.Max(0, damage - Block);
+
+            Block -= damage;
+
+            if (currentDamage > 0)
             {
-                var currentDamage = damage;
+                CurrentHealth -= currentDamage;
 
-                currentDamage -= Block;
-                Block -= damage;
+                int actualHealthDamage = healthBeforeDamage - CurrentHealth;
 
-                if (currentDamage <= 0)
-                {
-                    currentDamage = 0;
-                }
+                OnHealthDamageTaken?.Invoke(actualHealthDamage);
 
-
-                Debug.Log("currentdamage " + currentDamage);
-                Debug.Log("block " + Block);
-
-                if (Block == 0)
-                {
-                    CurrentHealth -= currentDamage;
-                    Debug.Log("Player HP: " + CurrentHealth);
-                }
-
-                else
-                {
-                    Debug.Log("Blocked");
-                }
-
-                CheckHealth();
+                Debug.Log("Player HP: " + CurrentHealth);
             }
-        }
+            else
+            {
+                Debug.Log("Blocked");
+            }
 
+            CheckHealth();
+        }
         private void CheckHealth()
         {
             if (CurrentHealth <= 0 && !_isDead)

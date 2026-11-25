@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Collections;
 using Gameplay.Cards;
 using Gameplay.Cards.Effects;
 using Gameplay.Characters;
@@ -7,6 +8,7 @@ using Gameplay.Relics;
 using UI;
 using UnityEngine;
 using Gameplay.Rewards;
+using Gameplay.Animation;
 
 namespace Gameplay.Combat
 {
@@ -15,6 +17,8 @@ namespace Gameplay.Combat
         private Turns _currentTurn;
         [SerializeField] private Player player;
         [SerializeField] private Enemy enemy;
+        [SerializeField] private EnemyAnimationController enemyAnimationController;
+        [SerializeField] private PlayerAnimationController playerAnimationController;
         [SerializeField] private Deck.Deck deck;
         [SerializeField] private RumCup rumCup;
         [SerializeField] private PlayerHandUI playerHandUI;
@@ -26,6 +30,8 @@ namespace Gameplay.Combat
         {
             player.OnDeath += HandlePlayerDeath;
             enemy.OnDeath += HandleEnemyDeath;
+            player.OnHealthDamageTaken += HandlePlayerHealthDamageTaken;
+
         }
 
         private void Start()
@@ -107,15 +113,15 @@ namespace Gameplay.Combat
         private void EndPlayerTurn()
         {
             if (_combatState != CombatState.InProgress)
-            {
                 return;
-            }
+
             if (_currentTurn == Turns.PlayerTurn)
             {
                 deck.DiscardHand();
                 playerHandUI.DiscardHand();
                 rumCup.ResetAfterTurn();
-                EnemyTurn();
+
+                StartCoroutine(EnemyTurn());
             }
         }
         
@@ -138,22 +144,32 @@ namespace Gameplay.Combat
             Debug.Log("Player turn " + _currentTurn);
         }
 
-        private void EnemyTurn()
+        private IEnumerator EnemyTurn()
         {
             if (_combatState != CombatState.InProgress)
-            {
-                return;
-            }
+                yield break;
+
             _currentTurn = Turns.EnemyTurn;
+
             Debug.Log("Enemy turn");
             Debug.Log($"[BLOCK TEST] Enemy Block at turn start: {enemy.Block}");
+
             enemy.ResetBlock();
+
             EnemyAction action = enemy.ExecuteIntent();
+
             switch (action.Intent)
             {
                 case EnemyIntent.Attack:
                     Debug.Log($"Enemy attacks player for {action.Value} damage");
-                    player.TakeDamage(action.Value);
+
+                    yield return StartCoroutine(
+                        enemyAnimationController.PlayAttackAnimation(
+                            player.transform,
+                            () => player.TakeDamage(action.Value)
+                        )
+                    );
+
                     break;
 
                 case EnemyIntent.Block:
@@ -161,19 +177,21 @@ namespace Gameplay.Combat
                     Debug.Log($"Enemy blocked: {enemy.Block}");
                     break;
             }
+
             if (_combatState != CombatState.InProgress)
-            {
-                return;
-            }
+                yield break;
+
             enemy.ReduceVulnerable();
             enemy.ChooseNextIntent();
+
             Debug.Log("Enemy turn End");
+
             PlayerTurn();
         }
-
         public bool PlayCard(Card card)
         {
-            if (_combatState != CombatState.InProgress)
+            if (_combatState != CombatState.InProgress ||
+                _currentTurn != Turns.PlayerTurn)
             {
                 return false;
             }
@@ -231,6 +249,13 @@ namespace Gameplay.Combat
             rewardController.GenerateRewards();
 
             OnCombatEnded?.Invoke(CombatState.Victory);
+        }
+        
+        private void HandlePlayerHealthDamageTaken(int damage)
+        {
+            playerAnimationController.PlayHitReaction(
+                enemyAnimationController.transform
+            );
         }
        
     }

@@ -638,6 +638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 151074037}
   - component: {fileID: 151074038}
+  - component: {fileID: 151074039}
   m_Layer: 0
   m_Name: PlayerVisual
   m_TagString: Untagged
@@ -719,6 +720,69 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &151074039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151074036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19ffbdea56f081a45a756d1c5acae338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Animation.PlayerAnimationController
+  knockbackDistance: 0.3
+  knockbackDuration: 0.15
+  returnDuration: 0.2
+  knockbackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  returnCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &166578161
 GameObject:
   m_ObjectHideFlags: 0
@@ -2168,6 +2232,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatController
   player: {fileID: 707346249}
   enemy: {fileID: 1165564357}
+  enemyAnimationController: {fileID: 1201599790}
+  playerAnimationController: {fileID: 151074039}
   deck: {fileID: 1205717957}
   rumCup: {fileID: 989364073}
   playerHandUI: {fileID: 1112883159}
@@ -4178,7 +4244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Characters.BasicEnemy
   block: 0
   blockAmount: 5
-  currentIntent: 1
+  currentIntent: 0
 --- !u!1 &1201599787
 GameObject:
   m_ObjectHideFlags: 0
@@ -4189,6 +4255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1201599788}
   - component: {fileID: 1201599789}
+  - component: {fileID: 1201599790}
   m_Layer: 0
   m_Name: EnemyVisual
   m_TagString: Untagged
@@ -4270,6 +4337,88 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1201599790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201599787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0073b3d19ba40b4f97d70a8df7b15ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Animation.EnemyAnimationController
+  forwardDuration: 0.8
+  impactPauseDuration: 0.05
+  returnDuration: 0.4
+  attackDistance: 3
+  forwardCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.65580684
+      value: 0.14755568
+      inSlope: 0.4753281
+      outSlope: 0.4753281
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9024732
+      value: 0.41285625
+      inSlope: 1.4890138
+      outSlope: 1.4890138
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12616454
+      outWeight: 0.37981838
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  returnCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1205717956
 GameObject:
   m_ObjectHideFlags: 0
