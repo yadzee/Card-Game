@@ -21,6 +21,7 @@ namespace Gameplay.Combat
         [SerializeField] private RumCup rumCup;
         [SerializeField] private PlayerHandUI playerHandUI;
         [SerializeField] private EnemyIntentUI enemyIntentUI;
+        [SerializeField] private TurnNotificationUI turnNotificationUI;
         [SerializeField] private RewardController rewardController;
         [SerializeField] private EnemyAnimationController enemyAnimationController;
         [SerializeField] private PlayerAnimationController playerAnimationController;
@@ -39,9 +40,9 @@ namespace Gameplay.Combat
         private void Start()
         {
             _combatState = CombatState.InProgress;
-            PlayerTurn();
+            StartCoroutine(PlayerTurn());
         }
-
+        
         private void Update()
         {
             if (_combatState != CombatState.InProgress)
@@ -132,28 +133,55 @@ namespace Gameplay.Combat
             EndPlayerTurn();
         }
 
-        private void PlayerTurn()
+        private IEnumerator PlayerTurn()
         {
             if (_combatState != CombatState.InProgress)
-                return;
+                yield break;
+
+            // Блокируем действия игрока на время уведомления.
+            _currentTurn = Turns.EnemyTurn;
+
+            yield return StartCoroutine(
+                turnNotificationUI.ShowTurnNotification("ХОД ИГРОКА")
+            );
+
+            if (_combatState != CombatState.InProgress)
+                yield break;
 
             player.ResetEnergy();
             player.ResetBlock();
+
             deck.DrawCards(5);
+
             Debug.Log($"Cards in hand: {deck.Hand.Count}");
+
             playerHandUI.AddCardsToHand(deck.Hand);
+
+            // Показываем следующее намерение врага.
+            yield return StartCoroutine(enemyIntentUI.FadeIn());
+
+            // Только теперь разрешаем игроку действовать.
             _currentTurn = Turns.PlayerTurn;
-            enemyIntentUI.PlayFadeIn();
 
             Debug.Log("Player turn " + _currentTurn);
         }
-
+        
         private IEnumerator EnemyTurn()
         {
             if (_combatState != CombatState.InProgress)
                 yield break;
 
             _currentTurn = Turns.EnemyTurn;
+
+            // Сначала уведомление.
+            yield return StartCoroutine(
+                turnNotificationUI.ShowTurnNotification("ХОД ПРОТИВНИКА")
+            );
+
+            if (_combatState != CombatState.InProgress)
+                yield break;
+
+            // Затем анимация намерения.
             yield return StartCoroutine(enemyIntentUI.PlayScalePulse());
             yield return StartCoroutine(enemyIntentUI.FadeOut());
 
@@ -192,8 +220,10 @@ namespace Gameplay.Combat
 
             Debug.Log("Enemy turn End");
 
-            PlayerTurn();
+            // После действия врага начинаем ход игрока.
+            yield return StartCoroutine(PlayerTurn());
         }
+        
         public bool PlayCard(Card card)
         {
             if (_combatState != CombatState.InProgress ||

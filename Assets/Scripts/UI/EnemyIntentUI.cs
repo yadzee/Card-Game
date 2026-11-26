@@ -37,7 +37,6 @@ namespace UI
         private RectTransform _rectTransform;
         private Vector2 _startPosition;
 
-        private Coroutine _fadeCoroutine;
 
         private void Awake()
         {
@@ -87,33 +86,22 @@ namespace UI
             intentIcon.sprite = sprite == null ? null : sprite;
             intentIcon.color = color;
         }
-
-        public void PlayFadeIn()
+        
+        public IEnumerator FadeIn()
         {
-            StopFade();
-
-            _fadeCoroutine = StartCoroutine(FadeInRoutine());
+            yield return FadeTo(1f, fadeDuration);
         }
 
         public IEnumerator FadeOut()
         {
-            StopFade();
-
-            yield return FadeTo(0f);
+            yield return FadeTo(0f, fadeDuration);
         }
-
-        private IEnumerator FadeInRoutine()
-        {
-            yield return FadeTo(1f);
-
-            _fadeCoroutine = null;
-        }
-
-        private IEnumerator FadeTo(float targetAlpha)
+        
+        private IEnumerator FadeTo(float targetAlpha, float duration)
         {
             float startAlpha = canvasGroup.alpha;
 
-            if (fadeDuration <= 0f)
+            if (duration <= 0f)
             {
                 canvasGroup.alpha = targetAlpha;
                 yield break;
@@ -121,12 +109,12 @@ namespace UI
 
             float elapsedTime = 0f;
 
-            while (elapsedTime < fadeDuration)
+            while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
 
                 float progress = Mathf.Clamp01(
-                    elapsedTime / fadeDuration
+                    elapsedTime / duration
                 );
 
                 canvasGroup.alpha = Mathf.Lerp(
@@ -139,17 +127,7 @@ namespace UI
             }
 
             canvasGroup.alpha = targetAlpha;
-        }
-
-        private void StopFade()
-        {
-            if (_fadeCoroutine == null)
-                return;
-
-            StopCoroutine(_fadeCoroutine);
-            _fadeCoroutine = null;
-        }
-        
+        }        
         public IEnumerator PlayScalePulse()
         {
             if (pulseDuration <= 0f)
@@ -181,7 +159,6 @@ namespace UI
 
         private void OnDisable()
         {
-            StopFade();
             enemy.OnIntentChanged -= HandleIntentChanged;
         }
     }
